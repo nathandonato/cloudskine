@@ -1,0 +1,9 @@
+hello_world:
+  user: one
+  day: '20190919'
+  body: "**Hello World**"
+
+new_line:
+  user: one
+  day: '20190920'
+  body: "foo\n\nbar"
