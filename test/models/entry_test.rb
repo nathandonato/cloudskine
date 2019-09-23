@@ -29,4 +29,18 @@ class EntryTest < ActiveSupport::TestCase
     @user.destroy!
     assert_raises { Entry.find(@entry.id) }
   end
+
+  test 'scope #for_day' do
+    day = @entry.day
+    assert_equal @entry, @user.entries.for_day(day)
+  end
+
+  test "does not find another user's entry" do
+    user = users(:two)
+    day = Date.new(1960, 1, 1)
+    Entry.where(day: day).delete_all # clean up to assure clean assertion
+    user.entries.create(day: day, body: 'foo')
+
+    assert_nil @user.entries.for_day(day)
+  end
 end

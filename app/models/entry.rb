@@ -6,4 +6,8 @@ class Entry < ApplicationRecord
 
   validates_presence_of :user_id, :day
   validates_uniqueness_of :day, scope: :user_id
+
+  def self.for_day(day)
+    find_by(day: day)
+  end
 end
