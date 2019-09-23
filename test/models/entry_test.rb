@@ -17,11 +17,11 @@ class EntryTest < ActiveSupport::TestCase
     assert_equal '**Hello World**', @entry.body
   end
 
-  test 'must have day' do
+  test 'must have user' do
     assert_not Entry.create(user: @user).valid?
   end
 
-  test 'must have user' do
+  test 'must have day' do
     assert_not Entry.create(day: Date.today).valid?
   end
 
@@ -31,7 +31,7 @@ class EntryTest < ActiveSupport::TestCase
   end
 
   test 'scope #for_day' do
-    day = @entry.day
+    day = Date.new(2019, 9, 19)
     assert_equal @entry, @user.entries.for_day(day)
   end
 
