@@ -3,7 +3,7 @@
 module API
   module V1
     # This is the v1 controller for the User model
-    class UsersController < ::ApplicationController
+    class UsersController < APIController
       def create
         User.create(new_user_params)
       end
