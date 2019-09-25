@@ -25,16 +25,6 @@ module API
           post api_v1_users_url, params: params, as: :json
         end
       end
-
-      test 'handles missing parameter' do
-        skip 'Not yet supported'
-
-        assert_difference 'User.count', 0 do
-          params = { user: @user_params.except(:email) }
-          post api_v1_users_url, params: params, as: :json
-          assert_response :bad_request
-        end
-      end
     end
   end
 end
