@@ -23,6 +23,10 @@ module API
         @jwt = JwtManager.encode(user_id: @user.id)
       end
 
+      teardown do
+        Rails.application.reload_routes!
+      end
+
       test 'autheticates user' do
         get '/base', headers: { 'Authorization' => @jwt }
 
