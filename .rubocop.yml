@@ -13,7 +13,6 @@ AllCops:
   Exclude:
     - bin/**/*
     - db/schema.rb
-    - node_modules/**/*
 
 Style/Documentation:
   Exclude:
