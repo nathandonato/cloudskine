@@ -1,25 +1,8 @@
-# README
+## cloudskine is a daily journal app
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+I'm building this project because I want a minimalistic app where I can journal daily across all of my devices.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-# cloudskine
+Also, it's a way for me to learn a few things:
+* React.js / Redux
+* Rails' API-only mode (my Rails experience was limited to Rails 4)
+* Using JWTs for user authentication
