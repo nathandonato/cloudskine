@@ -5,9 +5,10 @@ require 'jwt_manager'
 
 module API
   module V1
-    # Create a fake controller to test APIController functionality
-    class BaseController < APIController
-      before_action :authenticate_request!
+    class FakeController < APIController
+      include Concerns::UserAuthentication
+
+      before_action :authenticate_user!
 
       def index
         render nothing: true
@@ -15,10 +16,10 @@ module API
     end
 
     # Note this test's name mismatches the file name. Needed for Rails' magic to
-    # find the right controller class
-    class BaseControllerTest < ActionDispatch::IntegrationTest
+    # find our controller class
+    class FakeControllerTest < ActionDispatch::IntegrationTest
       setup do
-        Rails.application.routes.draw { get 'base' => 'api/v1/base#index' }
+        Rails.application.routes.draw { get 'fake' => 'api/v1/fake#index' }
         @user = users(:one)
         @jwt = JwtManager.encode(user_id: @user.id)
       end
@@ -28,20 +29,19 @@ module API
       end
 
       test 'autheticates user' do
-        get '/base', headers: { 'Authorization' => @jwt }
+        get '/fake', headers: { 'Authorization' => @jwt }
 
         assert_response :success
-        assert_equal @user, @controller.current_user
       end
 
       test 'renders unauthorized if no jwt provided' do
-        get '/base'
+        get '/fake'
         assert_response :unauthorized
       end
 
       test 'renders unauthorized if bad token' do
         jwt = JwtManager.encode(user_id: 0)
-        get '/base', headers: { 'Authorization' => jwt }
+        get '/fake', headers: { 'Authorization' => jwt }
         assert_response :unauthorized
       end
     end
