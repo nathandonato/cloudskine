@@ -6,9 +6,9 @@ require 'jwt_manager'
 module API
   module V1
     class FakeController < APIController
-      include Concerns::UserAuthentication
+      include Concerns::AuthenticateRequest
 
-      before_action :authenticate_user!
+      before_action :authenticate_request!
 
       def index
         render nothing: true

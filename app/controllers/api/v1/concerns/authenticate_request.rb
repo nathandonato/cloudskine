@@ -8,11 +8,11 @@ module API
     module Concerns
       # This module allows a controller to authenticate users via JWTs sent
       # in a request's headers
-      module UserAuthentication
+      module AuthenticateRequest
         include CommonRenders
         extend Memoist
 
-        def authenticate_user!
+        def authenticate_request!
           render_unauthorized unless current_user.present?
         end
 
