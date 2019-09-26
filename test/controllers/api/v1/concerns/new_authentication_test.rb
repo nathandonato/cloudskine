@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require 'minitest/stub_any_instance'
 require 'jwt_manager'
 
 module API
@@ -12,13 +13,18 @@ module API
 
         setup do
           @user = users(:one)
+          @time = 1.week.from_now
         end
 
         test 'creates new jwt' do
-          jwt = self.class.create_jwt(@user)
-          decoded = JwtManager.decode(jwt).first.with_indifferent_access
+          # Stub time to test expiration
+          ActiveSupport::Duration.stub_any_instance(:from_now, @time) do
+            jwt = self.class.create_jwt(@user)
+            decoded = JwtManager.decode(jwt).first.with_indifferent_access
 
-          assert_equal @user.id, decoded[:user_id]
+            assert_equal @user.id, decoded[:user_id]
+            assert_equal @time.to_i, decoded[:exp]
+          end
         end
       end
     end

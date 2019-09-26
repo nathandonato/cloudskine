@@ -11,7 +11,7 @@ module API
         def create_jwt(user)
           return unless user&.valid?
 
-          JwtManager.encode(user_id: user.id)
+          JwtManager.encode(user_id: user.id, exp: 1.week.from_now.to_i)
         end
       end
     end

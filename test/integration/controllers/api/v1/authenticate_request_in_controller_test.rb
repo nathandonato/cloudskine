@@ -44,6 +44,12 @@ module API
         get '/fake', headers: { 'Authorization' => jwt }
         assert_response :unauthorized
       end
+
+      test 'renders unauthorized if expired token' do
+        jwt = JwtManager.encode(user_id: @user.id, exp: 1.week.ago.to_i)
+        get '/fake', headers: { 'Authorization' => jwt }
+        assert_response :unauthorized
+      end
     end
   end
 end
