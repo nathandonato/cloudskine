@@ -5,8 +5,8 @@ module API
     module Concerns
       # This module has helper functions with common render patterns
       module CommonRenders
-        def render_unauthorized
-          render json: { error: 'Not Authorized' }, status: :unauthorized
+        def render_unauthorized(error = 'Not Authorized')
+          render json: { error: error }, status: :unauthorized
         end
       end
     end
