@@ -19,3 +19,4 @@ Style/Documentation:
     - db/**/*.rb
     - config/**/*.rb
     - test/**/*.rb
+    - app/serializers/**/*.rb
