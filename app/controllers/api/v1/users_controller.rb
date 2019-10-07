@@ -4,8 +4,14 @@ module API
   module V1
     # This is the v1 controller for the User model
     class UsersController < APIController
+      include Concerns::CommonRenders
+      extend Concerns::NewAuthentication
+
       def create
-        User.create(new_user_params)
+        user = User.new(new_user_params)
+        return render_bad_request(user.errors) unless user.save
+
+        render json: self.class.authentication_payload(user), status: :created
       end
 
       private
