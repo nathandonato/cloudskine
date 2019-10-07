@@ -16,10 +16,11 @@ module API
 
       test 'can log in' do
         post api_v1_login_path, params: { user: @user_params }
-        body = response.body
+        body = JSON.parse(response.body)
 
         assert_response :success
-        assert_equal @user.id, JwtManager.decode(body).first['user_id']
+        assert_equal @user.id, body['user']['id']
+        assert_equal @user.id, JwtManager.decode(body['token']).first['user_id']
       end
 
       test 'returns unauthorized if incorrect password' do

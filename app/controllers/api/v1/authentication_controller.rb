@@ -15,7 +15,7 @@ module API
       def login
         return render_unauthorized(INVALID_LOGIN_MESSAGE) unless user.present?
 
-        render json: self.class.create_jwt(user)
+        render json: self.class.authentication_payload(user), status: :ok
       end
 
       private

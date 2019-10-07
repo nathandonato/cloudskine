@@ -8,6 +8,10 @@ module API
     module Concerns
       # Extending this module allows a controller to create new authentications
       module NewAuthentication
+        def authentication_payload(user)
+          { user: UserSerializer.new(user), token: create_jwt(user) }
+        end
+
         def create_jwt(user)
           return unless user&.valid?
 
