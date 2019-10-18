@@ -9,7 +9,7 @@ require 'jwt_manager'
 module ActiveSupport
   class TestCase
     # Comment out this line if you are trying to use binding.pry
-    parallelize(workers: :number_of_processors)
+    # parallelize(workers: :number_of_processors)
     fixtures :all
   end
 end
