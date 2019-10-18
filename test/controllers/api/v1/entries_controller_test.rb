@@ -31,6 +31,18 @@ module API
         get "#{api_v1_entries_url}/#{entry.id}", headers: @headers
         assert_response :not_found
       end
+
+      test 'can POST #create' do
+        params = { day: Date.today, body: 'foobar' }
+        post api_v1_entries_url, headers: @headers, params: params
+        assert_response :created
+      end
+
+      test 'returns model errors upon bad #create' do
+        params = { body: 'foobar' }
+        post api_v1_entries_url, headers: @headers, params: params
+        assert_response :bad_request
+      end
     end
   end
 end

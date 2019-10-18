@@ -20,10 +20,21 @@ module API
         render json: entry, serializer: EntrySerializer, status: :ok
       end
 
+      def create
+        entry = current_user.entries.new(new_entry_params)
+        return render_bad_request(entry.errors) unless entry.save
+
+        render json: entry, serializer: EntrySerializer, status: :created
+      end
+
       private
 
       def entry_id
         params.require(:id)
+      end
+
+      def new_entry_params
+        params.permit(:day, :body)
       end
     end
   end
