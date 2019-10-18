@@ -12,6 +12,10 @@ module API
         def render_bad_request(error)
           render json: { error: error }, status: :bad_request
         end
+
+        def render_not_found(item = 'Page')
+          render json: { error: "#{item} not found" }, status: :not_found
+        end
       end
     end
   end

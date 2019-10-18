@@ -7,3 +7,13 @@ new_line:
   user: one
   day: '20190920'
   body: "foo\n\nbar"
+
+user_twos_first_entry:
+  user: two
+  day: '20191018'
+  body: |
+    Latest existential crisis:
+
+    I have learned I am not a real person but am actually a user inside a Rails test.
+
+    The worst part is that the tests aren't even in RSpec. They're using _Minitest_..."
