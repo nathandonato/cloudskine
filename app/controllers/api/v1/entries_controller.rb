@@ -27,6 +27,14 @@ module API
         render json: entry, serializer: EntrySerializer, status: :created
       end
 
+      def destroy
+        entry = current_user.entries.find_by_id(entry_id)
+        return render_not_found('Entry') if entry.nil?
+
+        entry.destroy
+        head :no_content
+      end
+
       private
 
       def entry_id

@@ -43,6 +43,18 @@ module API
         post api_v1_entries_url, headers: @headers, params: params
         assert_response :bad_request
       end
+
+      test 'can DELETE #destroy' do
+        entry = entries(:hello_world)
+        delete "#{api_v1_entries_url}/#{entry.id}", headers: @headers
+        assert_response :no_content
+      end
+
+      test "cannot destroy another user's entry" do
+        entry = entries(:user_twos_first_entry)
+        delete "#{api_v1_entries_url}/#{entry.id}", headers: @headers
+        assert_response :not_found
+      end
     end
   end
 end
