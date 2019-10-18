@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       post 'login', to: 'authentication#login'
 
       resources :users, only: [:create]
+      resources :entries, except: [:new]
     end
   end
 end
