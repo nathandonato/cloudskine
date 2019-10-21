@@ -33,4 +33,11 @@ class UserTest < ActiveSupport::TestCase
 
     assert_match(/is not a valid user_type/, exception.message)
   end
+
+  test 'preserves prompt if submitter deleted' do
+    prompt = @user.prompts.first
+    @user.destroy!
+
+    assert_nil prompt.reload.submitter
+  end
 end
