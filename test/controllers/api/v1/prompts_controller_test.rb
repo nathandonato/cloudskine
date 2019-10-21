@@ -57,6 +57,28 @@ module API
         post api_v1_prompts_url, headers: @headers, params: params
         assert_response :bad_request
       end
+
+      test 'admin can approve' do
+        headers = { 'Authorization' => generate_token(users(:admin)) }
+        put "#{api_v1_prompts_url}/#{@removed.id}/approve", headers: headers
+        assert_response :no_content
+      end
+
+      test 'admin can remove' do
+        headers = { 'Authorization' => generate_token(users(:admin)) }
+        put "#{api_v1_prompts_url}/#{@approved.id}/remove", headers: headers
+        assert_response :no_content
+      end
+
+      test 'user cannot approve' do
+        put "#{api_v1_prompts_url}/#{@removed.id}/approve", headers: @headers
+        assert_response :unauthorized
+      end
+
+      test 'user cannot remove' do
+        put "#{api_v1_prompts_url}/#{@approved.id}/remove", headers: @headers
+        assert_response :unauthorized
+      end
     end
   end
 end

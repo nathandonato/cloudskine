@@ -8,6 +8,7 @@ module API
       include Concerns::CommonRenders
 
       before_action :authenticate_request!
+      before_action :authenticate_admin!, only: %i[approve remove]
 
       def index
         render json: Prompt.approved, each_serializer: PromptSerializer
@@ -37,6 +38,14 @@ module API
         render json: prompt, serializer: PromptSerializer, status: :created
       end
 
+      def approve
+        transition_state(:approve)
+      end
+
+      def remove
+        transition_state(:remove)
+      end
+
       private
 
       def prompt_id
@@ -45,6 +54,16 @@ module API
 
       def prompt_params
         params.permit(:body)
+      end
+
+      def transition_state(event)
+        prompt = Prompt.find_by_id(prompt_id)
+        return render_not_found('Prompt') if prompt.nil?
+
+        successful = prompt.send(event)
+        return render_bad_request("Could not #{event} prompt") unless successful
+
+        head :no_content
       end
     end
   end
