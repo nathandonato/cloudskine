@@ -16,6 +16,10 @@ module API
           render_unauthorized unless current_user.present?
         end
 
+        def authenticate_admin!
+          render_unauthorized unless current_user&.admin?
+        end
+
         memoize def current_user
           return unless jwt_payload.present?
 
