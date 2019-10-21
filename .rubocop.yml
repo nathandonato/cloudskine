@@ -13,6 +13,7 @@ AllCops:
   Exclude:
     - bin/**/*
     - db/schema.rb
+    - vendor/**/*
 
 Style/Documentation:
   Exclude:
