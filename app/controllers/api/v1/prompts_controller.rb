@@ -38,6 +38,18 @@ module API
         render json: prompt, serializer: PromptSerializer, status: :created
       end
 
+      # Allow user to delete own prompt
+      # Eventually replace with a :deleted state
+      def destroy
+        prompt = current_user.prompts.find_by_id(prompt_id)
+        return render_not_found('Prompt') if prompt.nil?
+
+        destroyed = prompt.destroy
+        return render_bad_request('Could not delete prompt') unless destroyed
+
+        head :no_content
+      end
+
       def approve
         transition_state(:approve)
       end

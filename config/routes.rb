@@ -5,9 +5,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'login', to: 'authentication#login'
 
-      resources :users, only: [:create]
-      resources :entries, except: [:new]
-      resources :prompts, except: %i[new destroy] do
+      resources :users, only: :create
+      resources :entries, except: :new
+      resources :prompts, except: :new do
         member do
           put 'approve'
           put 'remove'

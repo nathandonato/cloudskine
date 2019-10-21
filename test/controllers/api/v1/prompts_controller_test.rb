@@ -10,6 +10,7 @@ module API
         @headers = { 'Authorization' => token }
         @approved = prompts(:wordbank_fiction)
         @removed = prompts(:spam)
+        @approved2 = prompts(:user_two)
       end
 
       test 'requires authentication' do
@@ -37,8 +38,7 @@ module API
       end
 
       test "can GET #show for another user's prompt" do
-        prompt = prompts(:user_two)
-        get "#{api_v1_prompts_url}/#{prompt.id}", headers: @headers
+        get "#{api_v1_prompts_url}/#{@approved2.id}", headers: @headers
         assert_response :success
       end
 
@@ -50,6 +50,16 @@ module API
       test 'can POST #create' do
         post api_v1_prompts_url, headers: @headers, params: { body: 'testing' }
         assert_response :created
+      end
+
+      test 'can DELETE #destroy' do
+        delete "#{api_v1_prompts_url}/#{@approved.id}", headers: @headers
+        assert_response :success
+      end
+
+      test "cannot DELETE another user's prompt" do
+        delete "#{api_v1_prompts_url}/#{@approved2.id}", headers: @headers
+        assert_response :not_found
       end
 
       test 'returns model errors upon bad #create' do
