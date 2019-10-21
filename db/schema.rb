@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_21_160733) do
+ActiveRecord::Schema.define(version: 2019_10_21_171250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 2019_10_21_160733) do
     t.index ["user_id"], name: "index_entries_on_user_id"
   end
 
+  create_table "prompts", force: :cascade do |t|
+    t.bigint "submitter_id"
+    t.text "body", null: false
+    t.string "aasm_state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["submitter_id"], name: "index_prompts_on_submitter_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
     t.string "email", null: false
@@ -35,4 +44,5 @@ ActiveRecord::Schema.define(version: 2019_10_21_160733) do
   end
 
   add_foreign_key "entries", "users"
+  add_foreign_key "prompts", "users", column: "submitter_id"
 end
