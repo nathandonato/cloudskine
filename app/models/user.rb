@@ -8,4 +8,6 @@ class User < ApplicationRecord
 
   validates :username, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
+
+  enum user_type: { user: 'user', admin: 'admin' }
 end
