@@ -9,8 +9,13 @@ module API
       include Concerns::AuthenticateRequest
 
       before_action :authenticate_request!
+      before_action :authenticate_admin!, only: :admins_only
 
       def index
+        render nothing: true
+      end
+
+      def admins_only
         render nothing: true
       end
     end
@@ -19,7 +24,10 @@ module API
     # find our controller class
     class FakeControllerTest < ActionDispatch::IntegrationTest
       setup do
-        Rails.application.routes.draw { get 'fake' => 'api/v1/fake#index' }
+        Rails.application.routes.draw do
+          get 'fake' => 'api/v1/fake#index'
+          get 'admins_only' => 'api/v1/fake#admins_only'
+        end
         @user = users(:one)
         @jwt = JwtManager.encode(user_id: @user.id)
       end
@@ -30,6 +38,13 @@ module API
 
       test 'autheticates user' do
         get '/fake', headers: { 'Authorization' => @jwt }
+
+        assert_response :success
+      end
+
+      test 'autheticates admin' do
+        jwt = generate_token(users(:admin))
+        get '/admins_only', headers: { 'Authorization' => jwt }
 
         assert_response :success
       end
@@ -48,6 +63,11 @@ module API
       test 'renders unauthorized if expired token' do
         jwt = JwtManager.encode(user_id: @user.id, exp: 1.week.ago.to_i)
         get '/fake', headers: { 'Authorization' => jwt }
+        assert_response :unauthorized
+      end
+
+      test 'renders unauthorized non-admin accesses admin page' do
+        get '/admins_only', headers: { 'Authorization' => @jwt }
         assert_response :unauthorized
       end
     end

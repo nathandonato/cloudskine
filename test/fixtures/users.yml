@@ -7,3 +7,9 @@ two:
   username: User2
   email: user2@foo.bar
   password_digest: foobar
+
+admin:
+  username: Admin
+  email: admin@foo.bar
+  password_digest: foobar
+  user_type: admin

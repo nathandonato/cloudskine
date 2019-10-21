@@ -31,7 +31,8 @@ module API
         entry = current_user.entries.find_by_id(entry_id)
         return render_not_found('Entry') if entry.nil?
 
-        entry.destroy
+        return render_bad_request('Could not delete entry') unless entry.destroy
+
         head :no_content
       end
 
