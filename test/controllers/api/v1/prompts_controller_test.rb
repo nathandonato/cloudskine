@@ -1,0 +1,62 @@
+# frozen_string_literal: true
+
+require 'test_helper'
+
+module API
+  module V1
+    class PromptsControllerTest < ActionDispatch::IntegrationTest
+      setup do
+        token = generate_token(users(:one))
+        @headers = { 'Authorization' => token }
+        @approved = prompts(:wordbank_fiction)
+        @removed = prompts(:spam)
+      end
+
+      test 'requires authentication' do
+        get api_v1_prompts_url
+        assert_response :unauthorized
+      end
+
+      test 'can GET #index' do
+        get api_v1_prompts_url, headers: @headers
+        assert_response :success
+      end
+
+      test '#index does not contain removed prompts' do
+        get api_v1_prompts_url, headers: @headers
+        actual = JSON.parse(response.body)
+        returned_prompt_ids = actual.map { |prompt| prompt['id'] }
+
+        assert_includes returned_prompt_ids, @approved.id
+        assert_not_includes returned_prompt_ids, @removed.id
+      end
+
+      test 'can GET #show' do
+        get "#{api_v1_prompts_url}/#{@approved.id}", headers: @headers
+        assert_response :success
+      end
+
+      test "can GET #show for another user's prompt" do
+        prompt = prompts(:user_two)
+        get "#{api_v1_prompts_url}/#{prompt.id}", headers: @headers
+        assert_response :success
+      end
+
+      test 'cannot GET #show a public removed prompt' do
+        get "#{api_v1_prompts_url}/#{@removed.id}", headers: @headers
+        assert_response :not_found
+      end
+
+      test 'can POST #create' do
+        post api_v1_prompts_url, headers: @headers, params: { body: 'testing' }
+        assert_response :created
+      end
+
+      test 'returns model errors upon bad #create' do
+        params = { body: @approved.body }
+        post api_v1_prompts_url, headers: @headers, params: params
+        assert_response :bad_request
+      end
+    end
+  end
+end

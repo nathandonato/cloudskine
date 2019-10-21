@@ -2,3 +2,14 @@ wordbank_fiction:
   submitter: one
   body: Take the words salt, invisible, night, music, and structure. Write
     a scene that includes all of the words.
+  aasm_state: approved
+
+user_two:
+  submitter: two
+  body: My name is User Two. This is my first prompt.
+  aasm_state: approved
+
+spam:
+  submitter: two
+  body: spamspamspamspamspamspamspam
+  aasm_state: removed

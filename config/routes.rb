@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
       resources :users, only: [:create]
       resources :entries, except: [:new]
+      resources :prompts, except: %i[new destroy]
     end
   end
 end
