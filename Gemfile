@@ -42,6 +42,10 @@ group :test, :ci do
   gem 'minitest-stub_any_instance'
 end
 
+group :ci do
+  gem 'minitest-ci'
+end
+
 group :development, :test do
   gem 'pry-byebug'
 end
