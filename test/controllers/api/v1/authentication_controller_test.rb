@@ -41,6 +41,13 @@ module API
         assert_response :unauthorized
         assert_equal @controller.class::INVALID_LOGIN_MESSAGE, error
       end
+
+      # TODO: Figure out a way to actually test that the cookie gets deleted.
+      test 'can log out' do
+        delete api_v1_logout_path
+
+        assert_response :success
+      end
     end
   end
 end

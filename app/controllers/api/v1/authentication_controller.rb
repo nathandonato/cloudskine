@@ -18,6 +18,11 @@ module API
         render_authentication_payload(user)
       end
 
+      def logout
+        cookies.delete(:jwt)
+        head :no_content
+      end
+
       private
 
       memoize def user
