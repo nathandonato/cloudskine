@@ -17,9 +17,19 @@ class Entries extends React.Component {
         'Content-Type': 'application/json'
       }
     })
-    .then(response => response.json())
+    .then((response) => {
+      if (!response.ok) throw response;
+      return response.json();
+    })
     .then((data) => {
       this.setState({ entries: data })
+    })
+    .catch(error => {
+      if (error.status === 401) {
+        localStorage.setItem('isLoggedIn', JSON.stringify(false))
+      } else {
+        console.log({ [error.status]: error.statusText })
+      }
     });
   }
 
@@ -28,7 +38,7 @@ class Entries extends React.Component {
 
     const listItems = entries.map((entry) =>
       <li key={entry.id}>
-        <a href='' onClick={() => alert(entry.body)}>{entry.day}</a>
+        <a href='#' onClick={() => alert(entry.body)}>{entry.day}</a>
       </li>
     );
 

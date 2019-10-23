@@ -1,5 +1,6 @@
 import React from 'react';
-import LoginForm from './components/login/LoginForm.js'
+import LoginForm from './components/authentication/LoginForm.js'
+import LogoutButton from './components/authentication/LogoutButton.js'
 import Entries from './components/entries/Entries.js'
 
 function App() {
@@ -8,11 +9,16 @@ function App() {
   }
 
  return (
-   <div>
+   <div className='app'>
      {isLoggedIn() ? (
-       <Entries/>
+       <div>
+         <Entries/>
+         <LogoutButton/>
+       </div>
      ) : (
-       <LoginForm/>
+       <div>
+         <LoginForm/>
+       </div>
      )}
    </div>
   )
