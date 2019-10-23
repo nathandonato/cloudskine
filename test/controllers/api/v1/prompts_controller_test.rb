@@ -7,7 +7,7 @@ module API
     class PromptsControllerTest < ActionDispatch::IntegrationTest
       setup do
         token = generate_token(users(:one))
-        @headers = { 'Authorization' => token }
+        @headers = jwt_cookie_header(token)
         @approved = prompts(:wordbank_fiction)
         @removed = prompts(:spam)
         @approved2 = prompts(:user_two)
@@ -69,13 +69,15 @@ module API
       end
 
       test 'admin can approve' do
-        headers = { 'Authorization' => generate_token(users(:admin)) }
+        token = generate_token(users(:admin))
+        headers = jwt_cookie_header(token)
         put "#{api_v1_prompts_url}/#{@removed.id}/approve", headers: headers
         assert_response :no_content
       end
 
       test 'admin can remove' do
-        headers = { 'Authorization' => generate_token(users(:admin)) }
+        token = generate_token(users(:admin))
+        headers = jwt_cookie_header(token)
         put "#{api_v1_prompts_url}/#{@approved.id}/remove", headers: headers
         assert_response :no_content
       end

@@ -41,7 +41,7 @@ module API
         end
 
         memoize def jwt
-          request&.headers&.[]('Authorization')&.split(' ')&.last
+          request&.cookies&.[]('jwt')
         end
       end
     end

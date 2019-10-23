@@ -17,3 +17,7 @@ end
 def generate_token(user = users(:one))
   JwtManager.encode(user_id: user.id)
 end
+
+def jwt_cookie_header(jwt)
+  { 'HTTP_COOKIE' => "jwt=#{jwt}" }
+end
