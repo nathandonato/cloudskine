@@ -4,7 +4,8 @@ namespace :development do
   desc 'Create a test user'
   task create_test_user: :environment do
     User.create!(username: 'admin',
-                 email: 'nathanjdonato+dev@gmail.com',
-                 password: 'testing123')
+                 email: 'user@foo.bar',
+                 password: 'testing123',
+                 user_type: 'admin')
   end
 end
