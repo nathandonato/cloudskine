@@ -37,14 +37,14 @@ module API
       end
 
       test 'autheticates user' do
-        get '/fake', headers: { 'Authorization' => @jwt }
+        get '/fake', headers: jwt_cookie_header(@jwt)
 
         assert_response :success
       end
 
       test 'autheticates admin' do
         jwt = generate_token(users(:admin))
-        get '/admins_only', headers: { 'Authorization' => jwt }
+        get '/admins_only', headers: jwt_cookie_header(jwt)
 
         assert_response :success
       end
@@ -56,19 +56,19 @@ module API
 
       test 'renders unauthorized if bad token' do
         jwt = JwtManager.encode(user_id: 0)
-        get '/fake', headers: { 'Authorization' => jwt }
+        get '/fake', headers: jwt_cookie_header(jwt)
         assert_response :unauthorized
       end
 
       test 'renders unauthorized if expired token' do
         jwt = JwtManager.encode(user_id: @user.id, exp: 1.week.ago.to_i)
-        get '/fake', headers: { 'Authorization' => jwt }
+        get '/fake', headers: jwt_cookie_header(jwt)
         assert_response :unauthorized
       end
 
-      test 'renders unauthorized non-admin accesses admin page' do
-        get '/admins_only', headers: { 'Authorization' => @jwt }
-        assert_response :unauthorized
+      test 'responds with forbidden if non-admin accesses admin page' do
+        get '/admins_only', headers: jwt_cookie_header(@jwt)
+        assert_response :forbidden
       end
     end
   end

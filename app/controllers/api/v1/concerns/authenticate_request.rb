@@ -17,7 +17,7 @@ module API
         end
 
         def authenticate_admin!
-          render_unauthorized unless current_user&.admin?
+          render_forbidden unless current_user&.admin?
         end
 
         memoize def current_user
@@ -41,7 +41,7 @@ module API
         end
 
         memoize def jwt
-          request&.headers&.[]('Authorization')&.split(' ')&.last
+          request&.cookies&.[]('jwt')
         end
       end
     end

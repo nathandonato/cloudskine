@@ -17,10 +17,11 @@ module API
       test 'can log in' do
         post api_v1_login_path, params: { user: @user_params }
         body = JSON.parse(response.body)
+        jwt = JwtManager.decode(response.cookies['jwt'])
 
         assert_response :success
         assert_equal @user.id, body['user']['id']
-        assert_equal @user.id, JwtManager.decode(body['token']).first['user_id']
+        assert_equal @user.id, jwt.first['user_id']
       end
 
       test 'returns unauthorized if incorrect password' do
@@ -39,6 +40,13 @@ module API
 
         assert_response :unauthorized
         assert_equal @controller.class::INVALID_LOGIN_MESSAGE, error
+      end
+
+      # TODO: Figure out a way to actually test that the cookie gets deleted.
+      test 'can log out' do
+        delete api_v1_logout_path
+
+        assert_response :success
       end
     end
   end

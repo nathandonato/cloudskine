@@ -6,17 +6,21 @@ require 'jwt_manager'
 module API
   module V1
     module Concerns
-      # Extending this module allows a controller to create new authentications
+      # Including this module allows a controller to create new authentications
       module NewAuthentication
-        # Returns the token and the user
-        def authentication_payload(user)
-          { user: UserSerializer.new(user), token: create_jwt(user) }
-        end
+        VALID_TOKEN_DURATION = 1.week
 
-        def create_jwt(user)
+        def render_authentication_payload(user)
           return unless user&.valid?
 
-          JwtManager.encode(user_id: user.id, exp: 1.week.from_now.to_i)
+          cookies[:jwt] = create_jwt_cookie(user.id)
+          render json: { user: UserSerializer.new(user) }, status: :ok
+        end
+
+        def create_jwt_cookie(user_id)
+          expiration_date = VALID_TOKEN_DURATION.from_now
+          jwt = JwtManager.encode(user_id: user_id, exp: expiration_date.to_i)
+          { value: jwt, httponly: true, expires: expiration_date }
         end
       end
     end

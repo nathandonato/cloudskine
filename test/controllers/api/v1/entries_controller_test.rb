@@ -7,7 +7,7 @@ module API
     class EntriesControllerTest < ActionDispatch::IntegrationTest
       setup do
         token = generate_token(users(:one))
-        @headers = { 'Authorization' => token }
+        @headers = jwt_cookie_header(token)
       end
 
       test 'requires authentication' do

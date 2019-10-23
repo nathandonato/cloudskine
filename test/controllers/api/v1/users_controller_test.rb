@@ -17,7 +17,7 @@ module API
           post api_v1_users_url, params: params, as: :json
           body = JSON.parse(response.body)
           user = body['user']
-          token = body['token']
+          token = response.cookies['jwt']
 
           assert_response :success
           refute_nil user['id']
