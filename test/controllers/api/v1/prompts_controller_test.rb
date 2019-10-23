@@ -84,12 +84,12 @@ module API
 
       test 'user cannot approve' do
         put "#{api_v1_prompts_url}/#{@removed.id}/approve", headers: @headers
-        assert_response :unauthorized
+        assert_response :forbidden
       end
 
       test 'user cannot remove' do
         put "#{api_v1_prompts_url}/#{@approved.id}/remove", headers: @headers
-        assert_response :unauthorized
+        assert_response :forbidden
       end
     end
   end

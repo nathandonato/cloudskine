@@ -17,7 +17,7 @@ module API
         end
 
         def authenticate_admin!
-          render_unauthorized unless current_user&.admin?
+          render_forbidden unless current_user&.admin?
         end
 
         memoize def current_user

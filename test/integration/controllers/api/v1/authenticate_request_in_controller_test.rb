@@ -66,9 +66,9 @@ module API
         assert_response :unauthorized
       end
 
-      test 'renders unauthorized non-admin accesses admin page' do
+      test 'responds with forbidden if non-admin accesses admin page' do
         get '/admins_only', headers: jwt_cookie_header(@jwt)
-        assert_response :unauthorized
+        assert_response :forbidden
       end
     end
   end

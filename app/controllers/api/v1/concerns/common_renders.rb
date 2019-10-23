@@ -16,6 +16,10 @@ module API
         def render_not_found(item = 'Page')
           render json: { error: "#{item} not found" }, status: :not_found
         end
+
+        def render_forbidden
+          head :forbidden
+        end
       end
     end
   end
