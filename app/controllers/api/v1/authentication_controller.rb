@@ -7,15 +7,15 @@ module API
     # This is the v1 controller for the User model
     class AuthenticationController < APIController
       include Concerns::CommonRenders
-      extend Concerns::NewAuthentication
+      include Concerns::NewAuthentication
       extend Memoist
 
-      INVALID_LOGIN_MESSAGE = 'Invalid email/password'
+      INVALID_LOGIN_MESSAGE = 'Invalid email or password'
 
       def login
         return render_unauthorized(INVALID_LOGIN_MESSAGE) unless user.present?
 
-        render json: self.class.authentication_payload(user), status: :ok
+        render_authentication_payload(user)
       end
 
       private
